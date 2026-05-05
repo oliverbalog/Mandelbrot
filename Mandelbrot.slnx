@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="Mandelbrot.Application/Mandelbrot.Application.csproj" Id="5849f9e8-69de-499a-84ba-c927c21f8e31" />
   <Project Path="Mandelbrot.Console/Mandelbrot.Console.csproj" />
 </Solution>
