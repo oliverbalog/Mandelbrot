@@ -2,7 +2,7 @@ namespace Mandelbrot.Application;
 
 public sealed class MandelbrotOptions
 {
-    public const int DefaultMaxIterations = 400;
+    public const int DefaultMaxIterations = 256;
     public const double DefaultCenterX = -0.5;
     public const double DefaultCenterY = 0.0;
     public const double DefaultScale = 4.0;

@@ -1,4 +1,19 @@
 <Solution>
+  <Folder Name="/data/">
+    <File Path="data/Szoftverfejlesztés párhuzamos architektúrákra.docx" />
+    <File Path="Mandelbrot.Application/Patterns_of_Parallel_Programming_CSharp.pdf" />
+    <File Path="Mandelbrot.Application/Párhuzamos algoritmusok tervezésének alapjai.pdf" />
+    <File Path="Mandelbrot.Application/Párhuzamos programozás .NET környezetben.pdf" />
+    <File Path="Mandelbrot.Application/Párhuzamos_programozás_javasolt_feleves_feladatok (1).pdf" />
+    <File Path="Mandelbrot.Application/Párhuzamos_programozás_javasolt_feleves_feladatok.pdf" />
+    <File Path="Mandelbrot.Application/SZPA_EA_01.pdf" />
+    <File Path="Mandelbrot.Application/SZPA_EA_02.pdf" />
+    <File Path="Mandelbrot.Application/SZPA_EA_03 (1).pdf" />
+    <File Path="Mandelbrot.Application/SZPA_EA_03.pdf" />
+    <File Path="Mandelbrot.Application/SZPA_EA_04.pdf" />
+    <File Path="Mandelbrot.Application/SZPA_EA_05.pdf" />
+    <File Path="Mandelbrot.Application/SZPA_EA_07.pdf" />
+  </Folder>
   <Project Path="Mandelbrot.Application/Mandelbrot.Application.csproj" Id="5849f9e8-69de-499a-84ba-c927c21f8e31" />
   <Project Path="Mandelbrot.Console/Mandelbrot.Console.csproj" />
 </Solution>

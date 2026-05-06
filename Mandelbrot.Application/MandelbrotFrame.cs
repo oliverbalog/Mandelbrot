@@ -32,6 +32,8 @@ public sealed class MandelbrotFrame
 
     public int Height { get; }
 
+    public int PointCount => _points.Length;
+
     public MandelbrotPoint GetPoint(int x, int y)
     {
         if ((uint)x >= (uint)Width)
