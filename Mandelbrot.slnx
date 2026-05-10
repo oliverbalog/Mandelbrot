@@ -15,5 +15,5 @@
     <File Path="Mandelbrot.Application/SZPA_EA_07.pdf" />
   </Folder>
   <Project Path="Mandelbrot.Application/Mandelbrot.Application.csproj" Id="5849f9e8-69de-499a-84ba-c927c21f8e31" />
-  <Project Path="Mandelbrot.Console/Mandelbrot.Console.csproj" />
+  <Project Path="Mandelbrot.WPF/Mandelbrot.WPF.csproj" Id="61b7ce4f-23dc-4a81-af70-6041c0eb0f03" />
 </Solution>
