@@ -12,6 +12,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        // Alapértelmezett workers szám: a rendszer processzor/szálainak száma
+        WorkersText.Text = Environment.ProcessorCount.ToString();
     }
 
     private async void RenderButton_Click(object sender, RoutedEventArgs e)
@@ -44,13 +46,28 @@ public partial class MainWindow : Window
 
         try
         {
-            // Run single-threaded first to provide a baseline
+            // Először egyszálúan futtatjuk a kiinduló referenciaidőhöz
             single = await Task.Run(() => MandelbrotCalculator.CalculateSingleThreaded(options));
 
-            // Then parallel
-            parallel = await Task.Run(() => MandelbrotCalculator.CalculateParallel(options));
+            // Ezután párhuzamosan futtatjuk a számítást
+            int? workers = null;
+            if (!string.IsNullOrWhiteSpace(WorkersText.Text))
+            {
+                if (int.TryParse(WorkersText.Text, out var w))
+                {
+                    if (w > 0) workers = w; // megadott pozitív szám
+                    else workers = null; // 0 vagy negatív -> automatikus (null)
+                }
+                else
+                {
+                    MessageBox.Show(this, "Invalid workers value", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
 
-            // Use the parallel frame for display (identical content expected)
+            parallel = await Task.Run(() => MandelbrotCalculator.CalculateParallel(options, degreeOfParallelism: workers));
+
+            // A megjelenítéshez a párhuzamos eredmény keretét használjuk (a tartalom várhatóan azonos)
             var frame = parallel.Frame;
 
             var bmp = CreateBitmapFromFrame(frame, options.MaxIterations);
@@ -89,10 +106,10 @@ public partial class MainWindow : Window
                 var p = frame.GetPoint(x, y);
                 var color = MapColor(p.Iterations, maxIterations, p.IsInSet);
                 var idx = (y * stride) + (x * 4);
-                pixels[idx + 0] = color.b; // B
-                pixels[idx + 1] = color.g; // G
-                pixels[idx + 2] = color.r; // R
-                pixels[idx + 3] = 255; // A
+                pixels[idx + 0] = color.b; // B (kék)
+                pixels[idx + 1] = color.g; // G (zöld)
+                pixels[idx + 2] = color.r; // R (piros)
+                pixels[idx + 3] = 255; // A (alfa)
             }
         }
 
@@ -106,12 +123,12 @@ public partial class MainWindow : Window
         {
             return (0, 0, 0);
         }
-        // Map iterations to a cooler hue ramp (blue -> yellow) and keep the set black.
+
         var t = iterations / (double)maxIter;
-        // apply simple gamma/smoothing so low iteration values don't all map to the same color
+        // Alkalmazzunk egyszerű gamma/simítást, hogy az alacsony iterációs értékek ne egyetlen színre essenek
         t = Math.Pow(t, 0.5);
 
-        // hue from 240 (blue) to 60 (yellow)
+        // Hue érték 240 (kék) és 60 (sárga) között
         var hue = 240.0 * (1.0 - t) + 60.0 * t;
         const double sat = 1.0;
         const double val = 1.0;
@@ -123,38 +140,38 @@ public partial class MainWindow : Window
     private static (double r, double g, double b) HsvToRgb(double h, double s, double v)
     {
         // h in [0,360), s,v in [0,1]
-        var hh = (h % 360 + 360) % 360;
-        var c = v * s;
-        var x = c * (1 - Math.Abs(((hh / 60.0) % 2) - 1));
-        var m = v - c;
+        var hueNorm = (h % 360 + 360) % 360;
+        var chroma = v * s;
+        var secondComponent = chroma * (1 - Math.Abs(((hueNorm / 60.0) % 2) - 1));
+        var match = v - chroma;
 
-        double r1 = 0, g1 = 0, b1 = 0;
-        if (hh < 60)
+        double red, green, blue;
+        if (hueNorm < 60)
         {
-            r1 = c; g1 = x; b1 = 0;
+            red = chroma; green = secondComponent; blue = 0;
         }
-        else if (hh < 120)
+        else if (hueNorm < 120)
         {
-            r1 = x; g1 = c; b1 = 0;
+            red = secondComponent; green = chroma; blue = 0;
         }
-        else if (hh < 180)
+        else if (hueNorm < 180)
         {
-            r1 = 0; g1 = c; b1 = x;
+            red = 0; green = chroma; blue = secondComponent;
         }
-        else if (hh < 240)
+        else if (hueNorm < 240)
         {
-            r1 = 0; g1 = x; b1 = c;
+            red = 0; green = secondComponent; blue = chroma;
         }
-        else if (hh < 300)
+        else if (hueNorm < 300)
         {
-            r1 = x; g1 = 0; b1 = c;
+            red = secondComponent; green = 0; blue = chroma;
         }
         else
         {
-            r1 = c; g1 = 0; b1 = x;
+            red = chroma; green = 0; blue = secondComponent;
         }
 
-        return (r1 + m, g1 + m, b1 + m);
+        return (red + match, green + match, blue + match);
     }
 
     private static double Clamp01(double v) => v < 0 ? 0 : (v > 1 ? 1 : v);

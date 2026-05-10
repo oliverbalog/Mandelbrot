@@ -5,7 +5,7 @@ using System.Windows;
 namespace Mandelbrot.WPF
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    /// Interakciós logika az App.xaml számára
     /// </summary>
     public partial class App : global::System.Windows.Application
     {
