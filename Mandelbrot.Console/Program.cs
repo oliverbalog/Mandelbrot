@@ -42,7 +42,7 @@ internal static class Program
 
             System.Console.Clear();
 
-            var renderer = new ConsoleMandelbrotRenderer(new CharacterPalette(" .:-=+*#%@"));
+            var renderer = new ConsoleMandelbrotRenderer(new CharacterPalette(" .:-=+*#&%@"));
             TimeSpan singleThreadedRenderElapsed;
             using (var singleThreadedRenderOperation = TimedOperation.Start("Single-threaded calculation result rendering", logger))
             {
