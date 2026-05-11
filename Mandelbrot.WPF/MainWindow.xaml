@@ -41,6 +41,11 @@
                 <TextBox x:Name="WorkersText" Width="80" Text="0" />
             </StackPanel>
 
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="Block size:" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <TextBox x:Name="BlockSizeText" Width="80" Text="32" />
+            </StackPanel>
+
             <Button x:Name="RenderButton" Content="Render" Width="120" Click="RenderButton_Click" />
 
             <Separator Margin="0,12,0,12" />

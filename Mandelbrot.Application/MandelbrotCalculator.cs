@@ -6,11 +6,6 @@ public static class MandelbrotCalculator
 {
     private const int DefaultBlockSize = 32;
 
-    public static MandelbrotFrame Calculate(MandelbrotOptions options, ILogger? logger = null)
-    {
-        return CalculateSingleThreaded(options, logger).Frame;
-    }
-
     public static MandelbrotCalculationResult CalculateSingleThreaded(MandelbrotOptions options, ILogger? logger = null)
     {
         ArgumentNullException.ThrowIfNull(options);

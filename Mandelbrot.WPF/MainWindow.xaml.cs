@@ -14,6 +14,8 @@ public partial class MainWindow : Window
         InitializeComponent();
         // Alapértelmezett workers szám: a rendszer processzor/szálainak száma
         WorkersText.Text = Environment.ProcessorCount.ToString();
+        // Alapértelmezett blokk méret
+        BlockSizeText.Text = "32";
     }
 
     private async void RenderButton_Click(object sender, RoutedEventArgs e)
@@ -65,7 +67,14 @@ public partial class MainWindow : Window
                 }
             }
 
-            parallel = await Task.Run(() => MandelbrotCalculator.CalculateParallel(options, degreeOfParallelism: workers));
+            // Olvassuk be a blokk méretet a UI-ból és adjuk tovább a számítási függvénynek
+            if (!int.TryParse(BlockSizeText.Text, out var blockSize) || blockSize <= 0)
+            {
+                MessageBox.Show(this, "Invalid block size (must be > 0)", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            parallel = await Task.Run(() => MandelbrotCalculator.CalculateParallel(options, degreeOfParallelism: workers, blockSize: blockSize));
 
             // A megjelenítéshez a párhuzamos eredmény keretét használjuk (a tartalom várhatóan azonos)
             var frame = parallel.Frame;
